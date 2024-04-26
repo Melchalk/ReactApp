@@ -1,35 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
+import { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { MyText } from './Components/MyText';
 
 function App() {
+  const [stateButton, setStateButton] = useState(true);
+  const [stateText, setStateText] = useState<string>("");
+
+  console.log(stateButton);
+
   return (
-    <>
-      <Navbar expand="lg" className="bg-body-tertiary">
-        <Container>
-          <Navbar.Brand href="#home">Mel-App</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <Button variant="warning">My Button</Button>{' '}
-    </>
-  )
+      <>
+        {MyText(stateText, setStateText)}
+        <Button variant="warning" onClick={() => setStateButton(!stateButton)}>My Button</Button>
+      </>
+  );
 }
 
-export default App
+export default App;
