@@ -1,14 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { MyText } from './Components/MyText';
 import { GetFacultyResponse } from './Components/GetFacultyResponse';
 import GetFaculty from './Components/GetFaculty';
+import { MyBytton } from './Components/MyButton';
+import { useAppSelector } from './redux/hooks';
+import { AuthWindow } from './Components/AuthWindow';
 
 export default function App() {
-  const [stateButton, setStateButton] = useState(false);
   const [stateText, setStateText] = useState<string>("");
   const [data, setData] = useState<GetFacultyResponse[]>();
+  const selector = useAppSelector((state) => state.counter.value)
 
   useEffect(() =>
   {
@@ -18,17 +20,14 @@ export default function App() {
       .catch(() => console.log('error sync'))
   }, []);
 
-  console.log(stateButton);
-
   return (
       <>
+        <AuthWindow />
+        <br />
         {MyText(stateText, setStateText)}
         <br />
-        <Button variant="warning" onClick={() =>
-          {
-            setStateButton(!stateButton)
-          }}
-          >My Button</Button>
+        <h1>{selector}</h1>
+        <MyBytton />
         <br />
         {GetFaculty(data)}
       </>
