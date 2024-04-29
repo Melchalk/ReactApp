@@ -7,6 +7,7 @@ import { ErrorPage } from './Pages/ErrorPage';
 import { HomePage } from './Pages/HomePage';
 import { AnotherPage } from './Pages/AnotherPage';
 import { NavigationBar } from './Pages/NavigationBar';
+import { facultyGetAll } from './Api/AppApi';
 
 export default function App() {
 
@@ -14,9 +15,8 @@ export default function App() {
 
   useEffect(() =>
   {
-    fetch("http://localhost:5084/api/faculty/get/all")
-      .then((res) => res.json())
-      .then((json) => setData(json))
+    facultyGetAll()
+      .then((res) => setData(res.data))
       .catch(() => console.log('error sync'))
   }, []);
 
