@@ -1,16 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
-import { MyText } from './Components/MyText';
 import { GetFacultyResponse } from './Components/GetFacultyResponse';
-import GetFaculty from './Components/GetFaculty';
-import { MyBytton } from './Components/MyButton';
-import { useAppSelector } from './redux/hooks';
-import { AuthWindow } from './Components/AuthWindow';
+import { AuthPage } from './Pages/AuthPage';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { ErrorPage } from './Pages/ErrorPage';
+import { HomePage } from './Pages/HomePage';
+import { AnotherPage } from './Pages/AnotherPage';
+import { NavigationBar } from './Pages/NavigationBar';
 
 export default function App() {
-  const [stateText, setStateText] = useState<string>("");
+
   const [data, setData] = useState<GetFacultyResponse[]>();
-  const selector = useAppSelector((state) => state.counter.value)
 
   useEffect(() =>
   {
@@ -21,15 +21,17 @@ export default function App() {
   }, []);
 
   return (
-      <>
-        <AuthWindow />
-        <br />
-        {MyText(stateText, setStateText)}
-        <br />
-        <h1>{selector}</h1>
-        <MyBytton />
-        <br />
-        {GetFaculty(data)}
-      </>
+      <BrowserRouter>
+        <NavigationBar />
+        <Routes>
+          <Route path='*' element={<Navigate to='/'/>}/>
+          <Route path='/' element={AnotherPage(data)}/>
+          <Route path='/auth' element={<AuthPage />}/>
+          <Route path='/home' element={<HomePage />}/>
+          <Route path="/error" element={<ErrorPage />}>
+            <Route path=":id" element={<ErrorPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
   );
 }

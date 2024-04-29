@@ -2,7 +2,7 @@ import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { useAppDispatch } from "../redux/hooks";
 import { login } from "../redux/AuthSlice";
 
-export function AuthWindow() {
+export function AuthPage() {
     const dispatch = useAppDispatch();
     
     return (
