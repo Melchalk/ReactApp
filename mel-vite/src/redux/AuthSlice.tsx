@@ -2,25 +2,14 @@ import { createSlice } from "@reduxjs/toolkit"
 
 interface AuthState {
     isLogin: boolean
-    accessToken: Token
-    refreshToken: Token
-}
-
-interface Token{
-    isPresent: boolean
-    token: string
+    accessToken: string
+    refreshToken: string
 }
 
 const initialState: AuthState = {
     isLogin: false,
-    accessToken: {
-        isPresent: false,
-        token: ""
-    },
-    refreshToken: {
-        isPresent: false,
-        token: ""
-    }
+    accessToken: "",
+    refreshToken: ""
 }
 
 export const authSlice = createSlice({
@@ -30,8 +19,14 @@ export const authSlice = createSlice({
         login: (state) => {
             state.isLogin = true
         },
-
+        addAuthToken: (state, action) => {
+            state.accessToken = action.payload,
+            localStorage.setItem('accessToken', action.payload)
+        },
+        addRefreshToken: (state, action) => {
+            state.refreshToken = action.payload
+        }
     },
 })
 
-export const { login } = authSlice.actions
+export const { login, addAuthToken, addRefreshToken} = authSlice.actions

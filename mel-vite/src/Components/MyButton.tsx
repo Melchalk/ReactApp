@@ -2,8 +2,7 @@ import { Button } from "react-bootstrap"
 import { decrement, increment } from "../redux/counterSlice";
 import { useAppDispatch } from "../redux/hooks";
 
-export function MyBytton()
-{
+export function MyBytton(){
     const dispatch = useAppDispatch();
 
     return(
