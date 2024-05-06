@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { LoginPage, RegisterPage } from './Pages/AuthPage';
+import { LoginPage, LogoutPage, RegisterPage } from './Pages/AuthPage';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ErrorPage } from './Pages/ErrorPage';
 import { HomePage } from './Pages/HomePage';
@@ -14,6 +14,7 @@ export default function App() {
           <Route path='*' element={<Navigate to='/'/>}/>
           <Route path='/' element={<AnotherPage />}/>
           <Route path='/auth' element={<LoginPage />}/>
+          <Route path='/logout' element={<LogoutPage />}/>
           <Route path='/register' element={<RegisterPage />}/>
           <Route path='/home' element={<HomePage />}/>
           <Route path="/error" element={<ErrorPage />}>

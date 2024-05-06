@@ -1,12 +1,44 @@
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { useAppDispatch } from "../redux/hooks";
-import { login } from "../redux/AuthSlice";
-import { useState } from "react";
-import LoginUser from "../Services/AuthService";
+import { addAuthToken, addRefreshToken, login } from "../redux/AuthSlice";
+import { useEffect, useState } from "react";
+import { RegisterRequest, loginUser, registerUser } from "../Services/AuthService";
+import { useNavigate } from "react-router-dom";
+
+export function LogoutPage() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => { 
+      dispatch(addAuthToken(null));
+      dispatch(addRefreshToken(null));
+      dispatch(login(false));
+  });
+
+  return (
+    <h1>Successful account logout</h1>
+  );
+}
 
 export function LoginPage() {
     const [statePhone, setStatePhone] = useState<string>("");
     const [statePassword, setStatePassword] = useState<string>("");   
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch();
+    
+    let status: number;
+
+    const onLoginUser = () => {
+      loginUser(statePhone, statePassword)
+        .then((res) =>{
+            console.log('sdf')
+            dispatch(addAuthToken(res.data?.accessToken));
+            dispatch(addRefreshToken(res.data?.refreshToken));
+            dispatch(login(true));
+            navigate('/home');
+            status = res.status;
+        })
+        .catch(() => navigate('/error/' + status))
+    };
 
     return (
       <>
@@ -17,24 +49,61 @@ export function LoginPage() {
           <Form.Control type="password" placeholder="Password" onChange={(t) => setStatePassword(t.target.value)}/>
         </FloatingLabel>
         <br />
-        <Button variant="warning" onClick={() => LoginUser(statePhone, statePassword)}>Ok</Button>
+        <Button variant="warning" onClick={() => onLoginUser()}>Ok</Button>
       </>
     );
 }
 
 export function RegisterPage() {
+  const [stateRequest, setStateRequest] = useState<RegisterRequest>({
+    userName: '',
+    userPosition: 0,
+    faculty: null,
+    userPhone: '',
+    userPassword:''
+  });
+
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
   
+  let status: number;
+
+  const onRegisterUser = () => {
+    registerUser(stateRequest)
+      .then((res) =>{
+          console.log('sdf')
+          dispatch(addAuthToken(res.data?.accessToken));
+          dispatch(addRefreshToken(res.data?.refreshToken));
+          navigate('/home');
+          status = res.status;
+      })
+      .catch(() => navigate('/error/' + status))
+  };
+
   return (
     <>
-      <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
-        <Form.Control type="email" placeholder="name@example.com" />
+      <FloatingLabel label="Name" className="mb-3">
+        <Form.Control placeholder="Name" onChange={(t) => 
+          setStateRequest({...stateRequest, userName: t.target.value})}/>
       </FloatingLabel>
-      <FloatingLabel controlId="floatingPassword" label="Password">
-        <Form.Control type="password" placeholder="Password" />
+      <FloatingLabel label="Position" className="mb-3">
+        <Form.Control placeholder="Position" onChange={(t) => 
+          setStateRequest({...stateRequest, userPosition: Number(t.target.value)})}/>
+      </FloatingLabel>
+      <FloatingLabel label="Phone" className="mb-3">
+        <Form.Control placeholder="name@example.com" onChange={(t) => 
+          setStateRequest({...stateRequest, userPhone: t.target.value})}/>
+      </FloatingLabel>
+      <FloatingLabel label="FacultyNumber" className="mb-3">
+        <Form.Control placeholder="FacultyNumber" onChange={(t) => 
+          setStateRequest({...stateRequest, faculty: Number(t.target.value)})}/>
+      </FloatingLabel>
+      <FloatingLabel label="Password">
+        <Form.Control type="password" placeholder="Password" onChange={(t) => 
+          setStateRequest({...stateRequest, userPhone: t.target.value})}/>
       </FloatingLabel>
       <br />
-      <Button variant="warning" onClick={() => dispatch(login())}>Ok</Button>
+      <Button variant="warning" onClick={() => onRegisterUser()}>Ok</Button>
     </>
   );
 }

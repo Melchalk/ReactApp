@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Dropdown, DropdownButton, Nav, Navbar } from 'react-bootstrap';
 
 export function NavigationBar(){
     return(
@@ -12,6 +12,11 @@ export function NavigationBar(){
                 <Nav.Link href="/pricing">Pricing</Nav.Link>
                 <Nav.Link href="/login">Pricing</Nav.Link>
               </Nav>
+              <DropdownButton id="dropdown-basic-button" title="Auth">
+                <Dropdown.Item href="/register">Register</Dropdown.Item>
+                <Dropdown.Item href="/auth">Log in</Dropdown.Item>
+                <Dropdown.Item href="/logout">Log out</Dropdown.Item>
+              </DropdownButton>
             </Container>
           </Navbar>
         </>
