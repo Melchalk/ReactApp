@@ -1,36 +1,26 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { MyText } from './Components/MyText';
-import { GetFacultyResponse } from './Components/GetFacultyResponse';
-import GetFaculty from './Components/GetFaculty';
+import { LoginPage, LogoutPage, RegisterPage } from './Pages/AuthPage';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { ErrorPage } from './Pages/ErrorPage';
+import { HomePage } from './Pages/HomePage';
+import { AnotherPage } from './Pages/AnotherPage';
+import { NavigationBar } from './Pages/NavigationBar';
 
 export default function App() {
-  const [stateButton, setStateButton] = useState(false);
-  const [stateText, setStateText] = useState<string>("");
-  const [data, setData] = useState<GetFacultyResponse[]>();
-
-  useEffect(() =>
-  {
-    fetch("http://localhost:5084/api/faculty/get/all")
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch(() => console.log('error sync'))
-  }, []);
-
-  console.log(stateButton);
-
   return (
-      <>
-        {MyText(stateText, setStateText)}
-        <br />
-        <Button variant="warning" onClick={() =>
-          {
-            setStateButton(!stateButton)
-          }}
-          >My Button</Button>
-        <br />
-        {GetFaculty(data)}
-      </>
+      <BrowserRouter>
+        <NavigationBar />
+        <Routes>
+          <Route path='*' element={<Navigate to='/'/>}/>
+          <Route path='/' element={<AnotherPage />}/>
+          <Route path='/auth' element={<LoginPage />}/>
+          <Route path='/logout' element={<LogoutPage />}/>
+          <Route path='/register' element={<RegisterPage />}/>
+          <Route path='/home' element={<HomePage />}/>
+          <Route path="/error" element={<ErrorPage />}>
+            <Route path=":id" element={<ErrorPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
   );
 }
